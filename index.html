@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ayoub.pw — سجّل اهتمامك</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0f;
+    --surface: #17171a;
+    --surface2: #1e1e23;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.15);
+    --text: #f0f0f0;
+    --muted: #888;
+    --accent: #7c6ef7;
+    --accent2: #5dcaa5;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 4rem;
+  }
+
+  nav {
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .logo-wrap { display: flex; align-items: center; gap: 10px; }
+  .logo-img {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    object-fit: contain;
+  }
+  .logo-text { font-size: 15px; font-weight: 600; color: var(--text); }
+  .logo-text span { color: var(--accent); }
+
+  .nav-dot { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .dot-live {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent2);
+    animation: blink 2s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+  .hero { text-align: center; max-width: 460px; margin-bottom: 2rem; }
+  .hero-logo {
+    width: 72px; height: 72px;
+    border-radius: 18px;
+    object-fit: contain;
+    margin: 0 auto 1.25rem;
+    display: block;
+    border: 0.5px solid var(--border2);
+    padding: 8px;
+    background: var(--surface);
+  }
+  h1 {
+    font-size: clamp(1.5rem, 4vw, 2.1rem);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.5px;
+  }
+  h1 em { font-style: normal; color: var(--accent); }
+  .subtitle { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+  .card {
+    width: 100%;
+    max-width: 520px;
+    background: var(--surface);
+    border: 0.5px solid var(--border2);
+    border-radius: 16px;
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+
+  .section-label {
+    font-size: 10px; font-weight: 600;
+    color: var(--muted); letter-spacing: 1.2px;
+    text-transform: uppercase; margin-bottom: 1rem;
+  }
+
+  .input-group { margin-bottom: 1rem; }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+  input[type="text"], input[type="email"], select {
+    width: 100%;
+    background: var(--surface2);
+    border: 0.5px solid var(--border2);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-size: 14px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+  }
+  input:focus, select:focus { border-color: var(--accent); }
+  select option { background: #1e1e23; }
+
+  .tags-label { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+  .tags-grid { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 1rem; }
+  .tag {
+    font-size: 12px; padding: 5px 12px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border2);
+    background: var(--surface2);
+    color: var(--muted);
+    cursor: pointer; transition: all 0.15s; user-select: none;
+  }
+  .tag.selected {
+    background: rgba(124,110,247,0.15);
+    border-color: var(--accent); color: var(--accent);
+  }
+
+  hr { border: none; border-top: 0.5px solid var(--border); margin: 1.25rem 0; }
+
+  .submit-btn {
+    width: 100%; padding: 13px;
+    background: var(--accent); color: #fff;
+    border: none; border-radius: var(--radius-sm);
+    font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: opacity 0.2s, transform 0.1s;
+    font-family: inherit;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .submit-btn:hover { opacity: 0.88; }
+  .submit-btn:active { transform: scale(0.98); }
+  .submit-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  .status {
+    margin-top: 1rem; padding: 11px 14px;
+    border-radius: var(--radius-sm); font-size: 13px;
+    display: none; align-items: center; gap: 8px;
+  }
+  .status.success {
+    display: flex;
+    background: rgba(29,158,117,0.12);
+    border: 0.5px solid rgba(29,158,117,0.3);
+    color: var(--accent2);
+  }
+  .status.error {
+    display: flex;
+    background: rgba(226,75,74,0.1);
+    border: 0.5px solid rgba(226,75,74,0.3);
+    color: #f09595;
+  }
+  .status.loading {
+    display: flex;
+    background: var(--surface2);
+    border: 0.5px solid var(--border2);
+    color: var(--muted);
+  }
+
+  .spinner {
+    width: 13px; height: 13px;
+    border: 2px solid rgba(255,255,255,0.15);
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  footer {
+    margin-top: 2.5rem; font-size: 11px;
+    color: var(--border2); text-align: center;
+    display: flex; align-items: center; gap: 8px; justify-content: center;
+  }
+  footer img { width: 16px; height: 16px; border-radius: 4px; opacity: 0.35; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo-wrap">
+    <img class="logo-img"
+      src="https://ik.imagekit.io/imgayoub/LOGO/ayoubpw.png?updatedAt=1774899292962"
+      alt="ayoub.pw"
+      onerror="this.style.display='none'">
+    <div class="logo-text">ayoub<span>.pw</span></div>
+  </div>
+  <div class="nav-dot">
+    <div class="dot-live"></div>
+    مباشر
+  </div>
+</nav>
+
+<div class="hero">
+  <img class="hero-logo"
+    src="https://ik.imagekit.io/imgayoub/LOGO/ayoubpw.png?updatedAt=1774899292962"
+    alt="ayoub.pw logo"
+    onerror="this.style.display='none'">
+  <h1>سجّل <em>اهتماماتك</em><br>وابقَ على تواصل</h1>
+  <p class="subtitle">أرسل اهتماماتك مباشرةً — وسأتواصل معك بما يناسبك.</p>
+</div>
+
+<div class="card">
+  <div class="section-label">معلوماتك</div>
+
+  <div class="input-group">
+    <label>الاسم</label>
+    <input type="text" id="name" placeholder="اسمك الكريم" />
+  </div>
+
+  <div class="input-group">
+    <label>البريد الإلكتروني</label>
+    <input type="email" id="email" placeholder="email@example.com" dir="ltr" />
+  </div>
+
+  <div class="input-group">
+    <label>المدينة</label>
+    <select id="city">
+      <option value="">اختر مدينتك</option>
+      <option value="Vienna">Vienna</option>
+      <option value="Berlin">Berlin</option>
+      <option value="London">London</option>
+      <option value="Dubai">Dubai</option>
+      <option value="Casablanca">Casablanca</option>
+      <option value="Other">أخرى</option>
+    </select>
+  </div>
+
+  <hr>
+
+  <div class="tags-label">اختر اهتماماتك</div>
+  <div class="tags-grid">
+    <span class="tag" data-val="automation">Automation</span>
+    <span class="tag" data-val="webdev">Web Dev</span>
+    <span class="tag" data-val="ai">AI / LLMs</span>
+    <span class="tag" data-val="crypto">Crypto</span>
+    <span class="tag" data-val="osint">OSINT</span>
+    <span class="tag" data-val="selfhosted">Self-hosted</span>
+    <span class="tag" data-val="linux">Linux</span>
+    <span class="tag" data-val="privacy">Privacy</span>
+    <span class="tag" data-val="arabic">محتوى عربي</span>
+  </div>
+
+  <hr>
+
+  <button class="submit-btn" id="send-btn" onclick="sendData()">
+    <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+    </svg>
+    أرسل
+  </button>
+
+  <div class="status" id="status-msg">
+    <div class="spinner" id="status-spinner" style="display:none"></div>
+    <span id="status-text"></span>
+  </div>
+</div>
+
+<footer>
+  <img src="https://ik.imagekit.io/imgayoub/LOGO/ayoubpw.png?updatedAt=1774899292962" alt="">
+  ayoub.pw · Vienna · 2026
+</footer>
+
+<script>
+  const WEBHOOK = 'https://n8n.ayoub.pw/webhook/interests';
+  const selectedTags = new Set();
+
+  document.querySelectorAll('.tag').forEach(tag => {
+    tag.addEventListener('click', () => {
+      const v = tag.dataset.val;
+      if (selectedTags.has(v)) { selectedTags.delete(v); tag.classList.remove('selected'); }
+      else { selectedTags.add(v); tag.classList.add('selected'); }
+    });
+  });
+
+  async function sendData() {
+    const btn     = document.getElementById('send-btn');
+    const spinner = document.getElementById('status-spinner');
+    const name    = document.getElementById('name').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const city    = document.getElementById('city').value;
+
+    if (!name)  { showStatus('error', 'الرجاء إدخال اسمك'); return; }
+    if (!email) { showStatus('error', 'الرجاء إدخال بريدك الإلكتروني'); return; }
+
+    btn.disabled = true;
+    spinner.style.display = 'block';
+    showStatus('loading', 'جاري الإرسال...');
+
+    const payload = {
+      name,
+      email,
+      city:      city || null,
+      interests: [...selectedTags],
+      timestamp: new Date().toISOString(),
+      source:    'ayoub.pw'
+    };
+
+    try {
+      const res = await fetch(WEBHOOK, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        showStatus('success', 'شكراً ' + name + '! تم استلام بياناتك بنجاح.');
+        btn.innerHTML = 'تم الإرسال ✓';
+        btn.style.background = 'var(--accent2)';
+        btn.disabled = true;
+      } else {
+        throw new Error('HTTP ' + res.status);
+      }
+    } catch (err) {
+      showStatus('error', 'حدث خطأ أثناء الإرسال، حاول مرة أخرى.');
+      btn.disabled = false;
+    } finally {
+      spinner.style.display = 'none';
+    }
+  }
+
+  function showStatus(type, msg) {
+    const el = document.getElementById('status-msg');
+    el.className = 'status ' + type;
+    document.getElementById('status-text').textContent = msg;
+  }
+</script>
+</body>
+</html>
